@@ -8,21 +8,31 @@ mkdir -p staticfiles
 python manage.py collectstatic --noinput
 
 
+#!/bin/bash
+
+# Update pip to the latest version
+echo "Upgrading pip..."
+python -m pip install --upgrade pip
+
 # Install dependencies
-echo "Installing dependencies from requirements.txt..."
+echo "Installing dependencies..."
 pip install -r requirements.txt
 
-# Collect static files (if using Django or similar framework)
+# Remove platform-specific dependencies
+echo "Removing incompatible dependencies..."
+sed -i '/pywin32/d' requirements.txt
+
+# Collect static files (if using Django)
 if [ -f manage.py ]; then
     echo "Collecting static files..."
+    mkdir -p staticfiles
     python manage.py collectstatic --noinput
 fi
 
-# Run database migrations (if applicable)
+# Apply database migrations
 if [ -f manage.py ]; then
     echo "Applying database migrations..."
     python manage.py migrate --noinput
 fi
 
-# Additional build steps can be added here
 echo "Build process completed successfully!"
