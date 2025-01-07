@@ -4,6 +4,10 @@
 
 #!/bin/bash
 
+mkdir -p staticfiles
+python manage.py collectstatic --noinput
+
+
 # Install dependencies
 echo "Installing dependencies from requirements.txt..."
 pip install -r requirements.txt
